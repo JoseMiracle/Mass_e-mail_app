@@ -1,2 +1,2 @@
-# Mass-e-mail-app
+# Mass_e-mail-app
 An app for sending mass emails.
