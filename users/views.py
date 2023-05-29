@@ -5,10 +5,12 @@ from rest_framework import generics, permissions, status
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
+from rest_framework_simplejwt import authentication
 
 from users.serializer import (
     UserSerializers,
-    SignInSerializer
+    SignInSerializer,
+    ChangePasswordSerializer
 )
 
 CustomUser = get_user_model()
@@ -50,10 +52,36 @@ class SignInAPIView(TokenObtainPairView):
         response = super().post(request, *args, **kwargs)
         serializer = self.get_serializer(data = request.data)
         data = {
-
             'access-token' : response.data['access']
         }
         return Response(data, status=status.HTTP_200_OK)
 
 
+class ChangePasswordAPIView(generics.UpdateAPIView):
+    serializer_class = ChangePasswordSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    http_method_names = ["patch"]
+    queryset = CustomUser.objects.all()
+
+    def get_object(self):   
+        return self.request.user
+    
+    @extend_schema(
+        description= "This endpoint is for changing password",    
+        responses= ChangePasswordSerializer,
+        examples=[
+            OpenApiExample(
+                "Example",
+                response_only=True,
+                value={
+                    "data": {
+                        "code": 200,
+                        "info": "password changes successfully",
+                    },
+                },
+            )
+        ]
+    )
+    def patch(self, request, *args, **kwargs):
+        return super().patch(request, *args, **kwargs)
     
