@@ -39,12 +39,11 @@ class CustomUserManager(BaseUserManager):
 class CustomUser(AbstractUser):
     username = None
     email = models.EmailField(_("email address"), unique=True)
-    surname = models.CharField(max_length=70, blank=False, null=False)
     other_name = models.CharField(max_length=70, blank=True)
     image = models.FileField()
   
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "other_name"]
+    REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = CustomUserManager()
 

@@ -5,12 +5,15 @@ from rest_framework import generics, permissions, status
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth import get_user_model
 from rest_framework.response import Response
-from rest_framework_simplejwt import authentication
+from rest_framework_simplejwt.tokens import RefreshToken 
+from rest_framework.views import APIView
+from rest_framework.authtoken.models import Token 
 
 from users.serializer import (
     UserSerializers,
     SignInSerializer,
-    ChangePasswordSerializer
+    ChangePasswordSerializer,
+    UpdateProfileSerializer
 )
 
 CustomUser = get_user_model()
@@ -49,17 +52,11 @@ class SignInAPIView(TokenObtainPairView):
         ]
     )
     def post(self, request, *args, **kwargs):
-        response = super().post(request, *args, **kwargs)
-        serializer = self.get_serializer(data = request.data)
-        data = {
-            'access-token' : response.data['access']
-        }
-        return Response(data, status=status.HTTP_200_OK)
-
+        return super().post(request, *args, **kwargs)
 
 class ChangePasswordAPIView(generics.UpdateAPIView):
-    serializer_class = ChangePasswordSerializer
     permission_classes = [permissions.IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
     http_method_names = ["patch"]
     queryset = CustomUser.objects.all()
 
@@ -84,4 +81,35 @@ class ChangePasswordAPIView(generics.UpdateAPIView):
     )
     def patch(self, request, *args, **kwargs):
         return super().patch(request, *args, **kwargs)
+
+class UpdateProfileAPIView(generics.RetrieveUpdateAPIView):
+
+    permission_classes = [permissions.IsAuthenticated]
+    serializer_class = UpdateProfileSerializer
+    queryset = CustomUser.objects.all()
+    http_method_names = ["put"]
+
+    def get_object(self):
+        return self.request.user
+    
+    @extend_schema(
+        examples=[
+            OpenApiExample(
+                "Example",
+                response_only=True,
+                value={
+                    "data": {
+                        "first_name": "string",
+                        "last_name": "string",
+                        "image": "file.png",
+                        "other_name": "string"
+                    },
+                },
+            )
+        ]
+    )
+    def put(self, request, *args, **kwargs):
+        return super().put(request, *args, **kwargs)
+
+
     
