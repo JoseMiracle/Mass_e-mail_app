@@ -1,8 +1,9 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from drf_spectacular.utils import OpenApiExample, extend_schema_serializer
+from drf_spectacular.utils import OpenApiExample
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import check_password
+from rest_framework_simplejwt.tokens import RefreshToken
 
 CustomUser = get_user_model()
 
@@ -52,4 +53,19 @@ class ChangePasswordSerializer(serializers.ModelSerializer):
         data = super().to_representation(instance)     
         data["info"] = "Password changed Succesfully"
         return data
+    
+
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomUser
+        fields = ["first_name", "last_name", "image", "other_name"]
+
+        extra_kwargs = {
+            "image": {
+                "required" : False
+                }
+        }   
         
+    def update(self, instance, validated_data):
+        return super().update(instance, validated_data)
+
