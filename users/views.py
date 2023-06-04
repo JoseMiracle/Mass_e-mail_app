@@ -111,5 +111,9 @@ class UpdateProfileAPIView(generics.RetrieveUpdateAPIView):
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
+class ResetPasswordAPIView(generics.UpdateAPIView):
+    serializer_class = UserSerializers
+    
+
 
     

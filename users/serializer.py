@@ -4,16 +4,22 @@ from drf_spectacular.utils import OpenApiExample
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
+from users.models import(
+    OTPModel
+)
 
 CustomUser = get_user_model()
 
 class UserSerializers(serializers.ModelSerializer):
     class Meta:
         model = CustomUser
-        fields = ["first_name", "surname", "password", "email"]
+        fields = ["first_name", "last_name", "password", "email"]
         extra_kwargs = {
             "password": {
                 "write_only": True
+            },
+            "email":{
+                "required": True
             }
         }
 

@@ -49,9 +49,8 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email   
-    
-# class Messages(models.Model):
-#     custom_user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-#     message = models.FileField()
 
+class OTPModel(models.Model):
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    otp = models.CharField(max_length=6)
 

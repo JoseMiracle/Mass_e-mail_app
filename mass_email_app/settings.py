@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     # Internal Apps
     "mass_email_app",
     "users",
+    "mails",
     
     # External packages
     "rest_framework",
@@ -192,3 +193,11 @@ SPECTACULAR_SETTINGS = {
 }
 
 
+ANYMAIL = {
+    # (exact settings here depend on your ESP...)
+    "MAILGUN_API_KEY": os.environ.get('MAILGUN_API_KEY'),
+    "MAILGUN_SENDER_DOMAIN": os.environ.get('MAILGUN_SENDER_DOMAIN'),  # your Mailgun domain, if needed
+}
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND') # or sendgrid.EmailBackend, or...
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')  # if you don't already have this in settings
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL')  # ditto (default from-email for Django errors)
