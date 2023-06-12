@@ -3,3 +3,10 @@ db.sqlite3
 .env
 *pycache
 new
+mails/__pycache__/*
+mails/migrations/__pycache__/*
+mass_email_app/__pycache__/*
+users/__pycache__/*
+users/migrations/__pycache__/*
+
+
