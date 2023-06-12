@@ -5,7 +5,7 @@ from anymail.message import attach_inline_image_file
 from users.models import(
     CustomUser
 )
-from users.serializer import(
+from users.serializers import(
     UserSerializers
 )
 from mails.models import (
@@ -41,8 +41,7 @@ class MailSerializer(serializers.ModelSerializer):
                     to=[receiver for receiver in receivers],
                     reply_to=["josephmiracle119@gmail.com"]
             )
-            
-            print("sent")
             msg.send()
+
         return {"receiver": ["messages sent"]}
  

@@ -8,12 +8,14 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken 
 from rest_framework.views import APIView
 from rest_framework.authtoken.models import Token 
+from users.throttle import OtpGenerationThrottle
 
-from users.serializer import (
+from users.serializers import (
     UserSerializers,
     SignInSerializer,
     ChangePasswordSerializer,
-    UpdateProfileSerializer
+    UpdateProfileSerializer,
+    OtpGenerationSerializer
 )
 
 CustomUser = get_user_model()
@@ -111,8 +113,31 @@ class UpdateProfileAPIView(generics.RetrieveUpdateAPIView):
     def put(self, request, *args, **kwargs):
         return super().put(request, *args, **kwargs)
 
-class ResetPasswordAPIView(generics.UpdateAPIView):
-    serializer_class = UserSerializers
+
+class OtpGenerationAPIView(generics.CreateAPIView):
+    serializer_class = OtpGenerationSerializer
+    permission_classes = [permissions.AllowAny]
+    throttle_classes = [OtpGenerationThrottle]
+
+    @extend_schema(
+        examples=[
+            OpenApiExample(
+                "Example",
+                response_only=True,
+                value={
+                    "data": {
+                         "message": "otp has been sent to your email:josephfew73@gmail.com",
+                    },
+                },
+            )
+        ]
+    )
+    def post(self, request, *args, **kwargs):
+        return super().post(request, *args, **kwargs)
+
+
+
+
     
 
 
