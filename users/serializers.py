@@ -4,8 +4,12 @@ from drf_spectacular.utils import OpenApiExample
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from django.contrib.auth.hashers import check_password
 from rest_framework_simplejwt.tokens import RefreshToken
+from django.core.validators import validate_email
+from django.core.mail import EmailMultiAlternatives
+from django_otp.models import Device
+import pyotp
 from users.models import(
-    OTPModel
+    OTP
 )
 
 CustomUser = get_user_model()
@@ -74,4 +78,43 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         
     def update(self, instance, validated_data):
         return super().update(instance, validated_data)
+
+
+class OtpGenerationSerializer(serializers.ModelSerializer):
+        
+        class Meta:
+            model = OTP
+            fields = ["email"]
+        
+        def validate(self, attrs):
+            provided_email = attrs["email"]
+            print(provided_email)
+
+            user = CustomUser.objects.filter(email = provided_email)
+            if user.exists() == False:
+                raise serializers.ValidationError("Users doen't exist.")
+    
+            return attrs
+                
+        def create(self, validated_data):
+            totp = pyotp.TOTP(pyotp.random_base32(), digits=6)
+            otp = totp.now()  
+            print("oooo", otp)
+
+            otp_generation = OTP.objects.create(email=validated_data["email"], otp=otp)
+
+            msg = EmailMultiAlternatives("Below is your otp", f"YOUR OTP is {otp}, mustn't be shared with anyone.",
+                             "josephmiracle119@gmail.com", [validated_data["email"]])
+            msg.send()
+            
+            return validated_data
+        
+        def to_representation(self, instance):
+            data = super().to_representation(instance)
+            data["message"] = f"otp has been sent to your email:{data['email']}"
+            data.pop('email')
+            
+            return data
+
+                
 

@@ -50,7 +50,10 @@ class CustomUser(AbstractUser):
     def __str__(self):
         return self.email   
 
-class OTPModel(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
-    otp = models.CharField(max_length=6)
+
+class OTP(models.Model):
+    otp = models.CharField(max_length=10)
+    email = models.EmailField() 
+
+
 

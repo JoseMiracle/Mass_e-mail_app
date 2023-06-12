@@ -56,7 +56,12 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
-    "drf_spectacular"
+    "drf_spectacular",
+
+    "django_otp",
+    "django_otp.plugins.otp_totp",
+    "django_otp.plugins.otp_hotp",
+    "django_otp.plugins.otp_static"
 ]
 
 MIDDLEWARE = [
@@ -65,6 +70,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django_otp.middleware.OTPMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -128,6 +134,16 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": [
         "rest_framework.renderers.JSONRenderer",
     ],
+
+    "DEFAULT_THROTTLE_CLASSES": [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+
+    "DEFAULT_THROTTLE_RATES":{
+        'anon': '100/day',
+        'user': '1000/day'
+    }
 }
 
 
@@ -201,3 +217,9 @@ ANYMAIL = {
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND') # or sendgrid.EmailBackend, or...
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')  # if you don't already have this in settings
 SERVER_EMAIL = os.environ.get('SERVER_EMAIL')  # ditto (default from-email for Django errors)
+
+OTP_BACKEND = 'django_otp.models.TOTPBackend'
+OTP_SECRET_KEY = os.environ.get('OTP_SECRET_KEY')
+OTP_DEFAULT_ALGORITHM = 'TOTP'
+OTP_TIME_INTERVAL = 30
+OTP_LENGTH = 6
