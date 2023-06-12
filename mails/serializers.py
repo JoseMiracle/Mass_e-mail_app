@@ -12,16 +12,19 @@ from mails.models import (
     Mail
 )
 
-class MailSerializer(serializers.ModelSerializer):
-    user = UserSerializers(required=False)
+class SendMailSerializer(serializers.ModelSerializer): # This is for serializing mails sent by user
+    sender = UserSerializers(required= False) 
     receiver = serializers.ListField(child=serializers.EmailField())
 
     class Meta:
         model = Mail
-        fields = ["user", "receiver"]
+        fields = ["sender", "receiver"]
         extra_kwargs = {
             "receiver": {
                 "required": True,
+            },
+            "sender":{
+                "read_only": True,
             }
         }
 
@@ -43,5 +46,22 @@ class MailSerializer(serializers.ModelSerializer):
             )
             msg.send()
 
-        return {"receiver": ["messages sent"]}
- 
+        return {
+            "receiver": mail_receivers
+        }
+    
+    def to_representation(self, instance):
+        data =  super().to_representation(instance)
+        data["sender"] = self.context['request'].user.email
+
+        return data
+    
+class AllMailSerializer(serializers.ModelSerializer): # This is for fetching sent and unsent mail by user
+    sender = UserSerializers()
+    
+    class Meta:
+        model = Mail
+        fields = ["sender", "receiver"]
+
+
+
