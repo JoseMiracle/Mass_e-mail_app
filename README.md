@@ -120,6 +120,7 @@ The Send Mail App provides the following API endpoints:
 - **POST** `api/mails/get-sent-mails/` - This is for retrieving the info of people mails were sent to
 
 
+
 ## API Documentation
 
 The API documentation is automatically generated using DRF Spectacular and presented using Swagger UI. You can access the interactive API documentation by visiting `http://localhost:8000/api/schema/swagger-ui/#/`. It provides a user-friendly interface to explore the available endpoints, view request/response formats, and test the API directly from the browser. The documentation includes detailed descriptions of the API endpoints, request/response schemas, and authentication requirements.
