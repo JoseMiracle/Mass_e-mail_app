@@ -110,7 +110,7 @@ Authorization: Bearer <jwt-token>
 The Send Mail App provides the following API endpoints:
 
 - **POST** `api/users/sign-up/` - This is for signing up
-- **POST** `api/users/sign-in/` - This is signing in, and access-token will be generated for authentication used in other endpoint
+- **POST** `api/users/sign-in/` - This is for signing in, and access-token will be generated for authentication used in other endpoint
 - **PATCH** `api/users/change-password/` - This is for changing a user's password requires authentication
 - **PUT**  `api/users/update-profile/` - This is for upadting user's profile, requires authentication
 - **POST** `api/users/otp-generation/` - This is used in generating otp for reseting password
