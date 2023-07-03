@@ -112,12 +112,13 @@ The Send Mail App provides the following API endpoints:
 - **POST** `api/users/sign-up/` - This is for signing up
 - **POST** `api/users/sign-in/` - This is signing in, and access-token will be generated for authentication used in other endpoint
 - **PATCH** `api/users/change-password/` - This is for changing a user's password requires authentication
- **PUT**  `api/users/update-profile/` - This is for upadting user's profile, requires authentication
- **POST** `api/users/otp-generation/` - This is used in generating otp for reseting password
- **POST** `api/users/otp-verification/`- This is for verifying the OTP the user supplies
-  **POST** `api/users/reset-password/` - This for resetting users password
-  **POST** `api/mails/send-mails/` - This for sending mails
-  **POST** `api/mails/get-sent-mails/` - This is for retrieving the info of people mails were sent to
+- **PUT**  `api/users/update-profile/` - This is for upadting user's profile, requires authentication
+- **POST** `api/users/otp-generation/` - This is used in generating otp for reseting password
+- **POST** `api/users/otp-verification/`- This is for verifying the OTP the user supplies
+- **POST** `api/users/reset-password/` - This for resetting users password
+- **POST** `api/mails/send-mails/` - This for sending mails
+- **POST** `api/mails/get-sent-mails/` - This is for retrieving the info of people mails were sent to
+
 
 
 ## API Documentation
