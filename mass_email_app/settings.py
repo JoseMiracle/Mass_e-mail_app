@@ -57,11 +57,6 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt.token_blacklist",
     "drf_yasg",
     "drf_spectacular",
-
-    "django_otp",
-    "django_otp.plugins.otp_totp",
-    "django_otp.plugins.otp_hotp",
-    "django_otp.plugins.otp_static"
 ]
 
 MIDDLEWARE = [
@@ -70,7 +65,6 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django_otp.middleware.OTPMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -176,50 +170,33 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
     "AUTH_HEADER_TYPES": ('Bearer', 'JWT'),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    "USER_ID_FIELD": "id",
-    "USER_ID_CLAIM": "user_id",
-    "USER_AUTHENTICATION_RULE": "rest_framework_simplejwt.authentication.default_user_authentication_rule",
-
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
-    "TOKEN_TYPE_CLAIM": "token_type",
-    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
-
-    "JTI_CLAIM": "jti",
-
-    "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
     "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
-
-    "TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainPairSerializer",
-    "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
-    "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
-    "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",
-    "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
-    "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
-
 
 
 SPECTACULAR_SETTINGS = {
     'TITLE': 'MASS EMAIL',
     'SERVE_INCLUDE_SCHEMA': False,
     "SERVE_PERMISSIONS": ["rest_framework.permissions.AllowAny"],
-
 }
 
 
 ANYMAIL = {
     # (exact settings here depend on your ESP...)
     "MAILGUN_API_KEY": os.environ.get('MAILGUN_API_KEY'),
-    "MAILGUN_SENDER_DOMAIN": os.environ.get('MAILGUN_SENDER_DOMAIN'),  # your Mailgun domain, if needed
+    "MAILGUN_SENDER_DOMAIN": os.environ.get('MAILGUN_SENDER_DOMAIN'), 
 }
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND') # or sendgrid.EmailBackend, or...
-DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')  # if you don't already have this in settings
+
+EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND')
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL') 
 SERVER_EMAIL = os.environ.get('SERVER_EMAIL')  # ditto (default from-email for Django errors)
 
-OTP_BACKEND = 'django_otp.models.TOTPBackend'
-OTP_SECRET_KEY = os.environ.get('OTP_SECRET_KEY')
-OTP_DEFAULT_ALGORITHM = 'TOTP'
-OTP_TIME_INTERVAL = 30
-OTP_LENGTH = 6
+
+CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
+CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+CELERY_BROKER_PASSWORD = os.environ.get('CELERY_BROKER_PASSWORD')
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_ACCEPT_CONTENT = ['application/json']
+
+
