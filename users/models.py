@@ -5,6 +5,8 @@ from django.contrib.auth.models import (
     AbstractUser
 )
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
+
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
@@ -54,7 +56,8 @@ class CustomUser(AbstractUser):
 
 class OTP(models.Model):
     otp = models.CharField(max_length=10)
-    email = models.EmailField() 
+    email = models.EmailField()
+    created_at = models.DateField(auto_now_add=True)
 
 
 
