@@ -117,7 +117,7 @@ The Send Mail App provides the following API endpoints:
 - **POST** `api/users/otp-verification/`- This is for verifying the OTP the user supplies
 - **POST** `api/users/reset-password/` - This for resetting users password
 - **POST** `api/mails/send-mails/` - This for sending mails
-- **POST** `api/mails/get-sent-mails/` - This is for retrieving the info of people mails were sent to
+- **GET** `api/mails/get-sent-mails/` - This is for retrieving the info of people mails were sent to
 
 
 
