@@ -1,12 +1,11 @@
 from django.shortcuts import render
 from rest_framework import generics, permissions, status
-from mails.api.v1.serializers import(
+from mails.api.v1.serializers import (
     SendMailSerializer,
     GetSentMailSerializer,
 )
-from mails.models import(
-    Mail
-)
+from mails.models import Mail
+
 
 class SendMailAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]
@@ -15,7 +14,8 @@ class SendMailAPIView(generics.CreateAPIView):
 
     def post(self, request, *args, **kwargs):
         return super().post(request, *args, **kwargs)
-    
+
+
 class GetSentMailAPIView(generics.ListAPIView):
     permission_classes = [permissions.IsAuthenticated]
     serializer_class = GetSentMailSerializer
@@ -26,5 +26,3 @@ class GetSentMailAPIView(generics.ListAPIView):
 
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
-    
-

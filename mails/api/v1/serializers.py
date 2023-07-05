@@ -41,7 +41,6 @@ class SendMailSerializer(
 class GetSentMailSerializer(
     serializers.ModelSerializer
 ):  # This is for fetching sent and unsent mail by user
-    
     class Meta:
         model = Mail
         fields = ["sender", "receiver", "created_at"]

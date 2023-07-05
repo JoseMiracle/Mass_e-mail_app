@@ -1,17 +1,15 @@
 from django.db import models
-from django.contrib.auth.models import (
-    BaseUserManager,
-    AbstractBaseUser,
-    AbstractUser
-)
+from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, AbstractUser
 from django.utils.translation import gettext_lazy as _
 from django.utils import timezone
+
 
 class CustomUserManager(BaseUserManager):
     """
     Custom user model manager where email is the unique identifiers
     for authentication instead of usernames.
     """
+
     def create_user(self, email, password, **extra_fields):
         """
         Create and save a user with the given email and password.
@@ -36,7 +34,7 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("Superuser must have is_staff=True."))
         if extra_fields.get("is_superuser") is not True:
             raise ValueError(_("Superuser must have is_superuser=True."))
-        return self.create_user(email, password, **extra_fields)        
+        return self.create_user(email, password, **extra_fields)
 
 
 class CustomUser(AbstractUser):
@@ -44,20 +42,17 @@ class CustomUser(AbstractUser):
     email = models.EmailField(_("email address"), unique=True)
     other_name = models.CharField(max_length=70, blank=True)
     image = models.FileField()
-  
+
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["first_name", "last_name"]
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.email   
+        return self.email
 
 
 class OTP(models.Model):
     otp = models.CharField(max_length=10)
     email = models.EmailField()
     created_at = models.DateField(auto_now_add=True)
-
-
-
