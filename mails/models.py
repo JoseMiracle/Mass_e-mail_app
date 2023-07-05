@@ -1,8 +1,8 @@
 from django.db import models
-from users.models import(
-    CustomUser
-)
+from users.models import CustomUser
 from django.utils.timezone import timedelta
+
+
 class Mail(models.Model):
     sender = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     receiver = models.EmailField(blank=False, null=False)
@@ -10,5 +10,3 @@ class Mail(models.Model):
 
     def __str__(self):
         return f"Message sent by {self.sender} to {self.receiver}"
-    
-

@@ -16,8 +16,3 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 
 # Automatically discover tasks in Django applications
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-
-
-
-
-
